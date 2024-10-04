@@ -11,7 +11,9 @@ app.use(express.json());
 // to serve static files
 app.use(express.static("/home/node/app/static/"));
 
-//Endpoints Devices
+//=======[ Main module code ]==================================================
+
+//----[Endpoints Devices]----
 
 //Obtener todos los dispositivos
 app.get("/device/all/", function (req, res) {
@@ -41,15 +43,13 @@ app.get("/device/:id", function (req, res) {
 //Insertar un nuevo dispositivo
 app.post("/device/new/", function (req, res) {
     if (
-        req.body.id != undefined &&
         req.body.name != undefined &&
         req.body.description != undefined &&
         req.body.state != undefined &&
         req.body.type != undefined
     ) {
         utils.query(
-            "INSERT INTO Devices (id, name, description, state, type) values(" +
-            req.body.id + ",'" +
+            "INSERT INTO Devices (name, description, state, type) values('" +
             req.body.name +
             "','" +
             req.body.description +
@@ -72,7 +72,22 @@ app.post("/device/new/", function (req, res) {
     }
 });
 
-//Actualizar un dispositivo
+
+//Actualizar el estado de un dispositivo
+app.put('/device/state/', function (req, res) {
+    utils.query("update Devices set state=" + req.body.status + " where id=" + req.body.id,
+        (err, resp, meta) => {
+            if (err) {
+                console.log(err.sqlMessage)
+                res.status(409).send(err.sqlMessage);
+            } else {
+                res.send("ok " + resp);
+            }
+        })
+
+})
+
+//Actualizar todos los campos de un dispositivo
 app.put("/device/", function (req, res) {
     if (
         req.body.id != undefined &&
@@ -108,18 +123,18 @@ app.put("/device/", function (req, res) {
 });
 
 //Eliminar un dispositivo
-app.delete('/device/',function(req,res){
-    
-    utils.query("delete from Devices where id="+req.body.id,
-        (err,resp,meta)=>{
-            if(err){
+app.delete('/device/', function (req, res) {
+
+    utils.query("delete from Devices where id=" + req.body.id,
+        (err, resp, meta) => {
+            if (err) {
                 console.log(err.sqlMessage)
                 res.status(409).send(err.sqlMessage);
-            }else{
-                res.send("Eliminado OK "+resp);
+            } else {
+                res.send("Eliminado OK " + resp);
             }
-    })
-    
+        })
+
 })
 
 /*app.get("/devices/", function (req, res, next) {

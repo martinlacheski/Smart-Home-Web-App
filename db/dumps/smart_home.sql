@@ -36,7 +36,7 @@ CREATE TABLE `Devices` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `description` varchar(128) NOT NULL,
-  `state` int(11) NOT NULL,
+  `state` decimal(10, 1) NOT NULL,
   `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -47,10 +47,28 @@ CREATE TABLE `Devices` (
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
 (1, 'Lampara 1', 'Luz living', 1, 0),
 (2, 'Lampara 2', 'Luz cocina', 0, 0),
-(3, 'Velador', 'Velador living', 1, 0),
-(4, 'Persiana 1', 'Persiana living', 1, 1),
-(5, 'Persiana 2', 'Persiana de la cocina', 1, 1),
-(6, 'Persiana 3', 'Persiana balcon', 0, 1);
+(3, 'Velador', 'Velador pieza', 0.5, 1),
+(4, 'Persiana 1', 'Persiana living', 0.4, 2),
+(5, 'Persiana 2', 'Persiana de la cocina', 0.6, 2),
+(6, 'Persiana 3', 'Persiana balcon', 0.2, 2);
+(7, 'Enchufe 1', 'Riego jardín', 0.0, 3);
+(8, 'Ventilador 1', 'Ventilador cocina', 0.4, 4);
+(9, 'Ventilador 2', 'Ventilador living', 0.0, 4);
+(10, 'Ventilador 3', 'Ventilador pieza', 0.6, 4);
+(11, 'AC 1', 'Aire acondicionado living', 24.0, 2);
+(12, 'AC 2', 'Aire acondicionado pieza', 0.0, 2);
+
+
+/*
+---Type of DEVICES---
+0 = Luces ON/OFF
+1 = Luces dimerizables
+2 = Persianas (Apertura variable)
+3 = Enchufes ON/OFF
+4 = Ventiladores (Apertura variable)
+5 = Aire acondicionado (temperatura variable)
+*/
+
 
 --
 -- Indexes for dumped tables
@@ -70,7 +88,7 @@ ALTER TABLE `Devices`
 -- AUTO_INCREMENT for table `Devices`
 --
 ALTER TABLE `Devices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
