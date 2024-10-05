@@ -45,28 +45,28 @@ CREATE TABLE `Devices` (
 --
 
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
-(1, 'Lampara 1', 'Luz living', 1, 0),
-(2, 'Lampara 2', 'Luz cocina', 0, 0),
-(3, 'Velador', 'Velador pieza', 0.5, 1),
-(4, 'Persiana 1', 'Persiana living', 0.4, 2),
-(5, 'Persiana 2', 'Persiana de la cocina', 0.6, 2),
-(6, 'Persiana 3', 'Persiana balcon', 0.2, 2);
-(7, 'Enchufe 1', 'Riego jardín', 0.0, 3);
-(8, 'Ventilador 1', 'Ventilador cocina', 0.4, 4);
-(9, 'Ventilador 2', 'Ventilador living', 0.0, 4);
-(10, 'Ventilador 3', 'Ventilador pieza', 0.6, 4);
-(11, 'AC 1', 'Aire acondicionado living', 24.0, 2);
-(12, 'AC 2', 'Aire acondicionado pieza', 0.0, 2);
+(1, 'Lampara 1', 'Luz living', 1, 1),
+(2, 'Lampara 2', 'Luz cocina', 0, 1),
+(3, 'Velador', 'Velador pieza', 0.5, 2),
+(4, 'Persiana 1', 'Persiana living', 0.4, 3),
+(5, 'Persiana 2', 'Persiana de la cocina', 0.6, 3),
+(6, 'Persiana 3', 'Persiana balcon', 0.2, 3),
+(7, 'Enchufe 1', 'Riego jardín', 0.0, 4),
+(8, 'Ventilador 1', 'Ventilador cocina', 0.4, 5),
+(9, 'Ventilador 2', 'Ventilador living', 0.0, 5),
+(10, 'Ventilador 3', 'Ventilador pieza', 0.6, 5),
+(11, 'AC 1', 'Aire acondicionado living', 24.0, 6),
+(12, 'AC 2', 'Aire acondicionado pieza', 0.0, 6)
 
 
 /*
 ---Type of DEVICES---
-0 = Luces ON/OFF
-1 = Luces dimerizables
-2 = Persianas (Apertura variable)
-3 = Enchufes ON/OFF
-4 = Ventiladores (Apertura variable)
-5 = Aire acondicionado (temperatura variable)
+1 = Luces ON/OFF
+2 = Luces dimerizables
+3 = Persianas (Apertura variable)
+4 = Enchufes ON/OFF
+5 = Ventiladores (Apertura variable)
+6 = Aire acondicionado (temperatura variable)
 */
 
 

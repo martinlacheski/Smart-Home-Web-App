@@ -75,16 +75,15 @@ app.post("/device/new/", function (req, res) {
 
 //Actualizar el estado de un dispositivo
 app.put('/device/state/', function (req, res) {
-    utils.query("update Devices set state=" + req.body.status + " where id=" + req.body.id,
+    utils.query("update Devices set state=" + req.body.state + " where id=" + req.body.id,
         (err, resp, meta) => {
             if (err) {
                 console.log(err.sqlMessage)
                 res.status(409).send(err.sqlMessage);
             } else {
-                res.send("ok " + resp);
+                res.send(204, resp);
             }
         })
-
 })
 
 //Actualizar todos los campos de un dispositivo
@@ -131,39 +130,11 @@ app.delete('/device/', function (req, res) {
                 console.log(err.sqlMessage)
                 res.status(409).send(err.sqlMessage);
             } else {
-                res.send("Eliminado OK " + resp);
+                res.send(204, resp);
             }
         })
 
 })
-
-/*app.get("/devices/", function (req, res, next) {
-    devices = [
-        {
-            id: 1,
-            name: "Lampara 1",
-            description: "Luz living",
-            state: 0,
-            type: 1,
-        },
-        {
-            id: 2,
-            name: "Ventilador 1",
-            description: "Ventilador Habitacion",
-            state: 1,
-            type: 2,
-        },
-        {
-            id: 3,
-            name: "Luz Cocina 1",
-            description: "Cocina",
-            state: 1,
-            type: 2,
-        },
-    ];
-    res.send(JSON.stringify(devices)).status(200);
-});
-*/
 
 app.listen(PORT, function (req, res) {
     console.log("NodeJS API running correctly");

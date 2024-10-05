@@ -17,42 +17,60 @@
         <!-- Navigation bar -->
         <nav style="background-color: #124580">
             <div id="xx" class="nav-wrapper">
-                <a href="#!" class="brand-logo left" style="margin-left: 70px">Smart Home</a>
-                <img src="./static/images/iot.png" class="brand-logo left"
-                    style="margin-top: 3px; margin-left: 10px;" width="4%">
-
+                <a href="#!" class="brand-logo left" style="margin-left: 90px">Smart Home</a>
+                <img src="./static/images/smart_home_white.png" class="brand-logo left"
+                    style="margin-top: 5px; margin-left: 10px; position: absolute; max-width: 50px; height: 50px;">
+                <button id="btnNuevo" class="waves-effect waves-light btn-small"
+                    style="position: absolute; right: 12px; top:15px; ">Nuevo Dispositivo</button>
             </div>
         </nav>
-        <!-- Page Body -->
+        <!-- Page -->
+
         <div class="deviceContainer" id="deviceContainer">
-            <br />
             <ul id="list"></ul>
-            <br />
-        </div>
-        <div id="updateModal" class="modal" style="display:none;">
-            <div class="modal-content">
-                <h4>Actualizar dispositivo</h4>
-                <form id="updateForm">
-                    <div>
-                        <label>Nombre:</label>
-                        <input type="text" id="modalDeviceName">
-                    </div>
-                    <div>
-                        <label>Descripción:</label>
-                        <input type="text" id="modalDeviceDesc">
-                    </div>
-                    <div>
-                        <label>Estado:</label>
-                        <input type="checkbox" id="modalDeviceState">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="saveChanges" class="modal-btn">Guardar</button>
-                <button id="cancelChanges" class="modal-btn">Cancelar</button>
-            </div>
         </div>
     </main>
+
+    <!-- Modal Structure -->
+    <div id="modalNuevo" class="modal" style="z-index: 9999;">
+        <div class="modal-content">
+            <div class="row">
+                <div class="browser-default col s6">
+                    <label for = "select_type">Tipo de dispositivo</label>
+                    <select class="browser-default" id="select_type" >
+                        <option value="" disabled selected>Elija una opción</option>
+                        <option value="1">Luces ON/OFF</option>
+                        <option value="2">Luces dimerizables</option>
+                        <option value="3">Persianas (Apertura variable)</option>
+                        <option value="4">Enchufes ON/OFF</option>
+                        <option value="5">Ventiladores (Apertura variable)</option>
+                        <option value="6">Aire acondicionado (Temperatura variable)</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <input placeholder="Nombre" id="input_name" type="text" autocomplete="off">
+                    <label for="input_name">Ingrese el nombre</label>
+                </div>
+                <div class="input-field col s8">
+                    <input placeholder="Descripción" id="input_description" type="text" autocomplete="off">
+                    <label for="input_description">Ingrese una descripcion</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            
+            <button type="button" id="btnGuardar" class="waves-effect waves-light btn-small">Guardar</button>
+            
+            <button type="button" id="btnCerrar"
+                class="modal-close waves-effect waves-green red btn-small">Cerrar</button>
+        </div>
+    </div>
+
     <!-- Page Footer -->
     <footer class="page-footer" style="background-color: #124580">
         <h5 class="white-text" style="margin-left: 15px">Smart Home</h5>
