@@ -2,7 +2,7 @@ class Main implements EventListenerObject {
 
     constructor() {
 
-        // Llamada al evento de cargar todos los dispositivos
+        // Ejecutar metodo GET de todos los dispositivos
         this.getAllDevices();
 
         let btnNuevo = this.recuperarElemento("btnNuevo");
@@ -17,21 +17,50 @@ class Main implements EventListenerObject {
 
         // Verificar el método a realizar
 
-        //Evento Guardar nuevo dispositivo
+        //Evento Crear dispositivo
         if (elemento.id == 'btnGuardar') {
+
             let type = this.recuperarElemento("select_type");
             let name = this.recuperarElemento("input_name");
             let description = this.recuperarElemento("input_description");
             if (type.value === '' || name.value === '' || description.value === '') {
                 alert('Por favor complete los datos del formularios');
-            } else {
-                alert("type: " + type.value + ", name: " + name.value + ", description: " + description.value);
+            } 
+
+            // Si el evento es para CREAR UN NUEVO DISPOSITIVO
+            else if (this.recuperarElemento("btnAction").textContent === 'NEW') {
+
+                // Ejecutar método CREAR Dispositivo
+                this.createDevice(name.value, description.value, parseInt(type.value));
+                // Ocultar el modal
+                this.ocultarModal();
+                // Actualizar lista de dispositivos
+                this.getAllDevices();
             }
-            // Evento Editar dispositivo
-        } else if (elemento.className.includes('editButton')) {
-            alert('editar dispositivo');
+
+            // Si el evento es para EDITAR UN DISPOSITO
+            else if (this.recuperarElemento("btnAction").textContent === 'EDIT') {
+
+                let device_id = this.recuperarElemento("device_id");
+                // Ejecutar método EDITAR Dispositivo
+                this.updateDevice(parseInt(device_id.textContent), name.value, description.value, parseInt(type.value))
+                // Ocultar el modal
+                this.ocultarModal();
+                // Actualizar lista de dispositivos
+                this.getAllDevices();
+            }    
         }
-        // Evento Borrar dispositivo
+
+        // Evento Editar Dispositivo
+        else if (elemento.className.includes('editButton')) {
+            let input = <HTMLInputElement>object.target;
+            let deviceID = input.getAttribute("idBd");
+            // Ejecutar metodo GET para obtener los datos del dispositivo
+            let device = this.getDevice(parseInt(deviceID));
+            this.mostrarModal();
+        }
+
+        // Evento Eliminar dispositivo
         else if (elemento.className.includes('deleteButton')) {
             if (confirm("¿Estás seguro de eliminar el dispositivo?") == true) {
                 // Ejecutar método BORRAR Dispositivo
@@ -70,7 +99,6 @@ class Main implements EventListenerObject {
 
             } else {
                 alert('Método aún no definido');
-
             }
         }
     }
@@ -83,21 +111,29 @@ class Main implements EventListenerObject {
         return <HTMLButtonElement>document.getElementById(id);
     }
 
+    private ocultarModal(): void {
+        const modal = this.recuperarElemento("modalNuevo");
+        let select = document.getElementById('select_type') as HTMLSelectElement;
+        select.selectedIndex = 0;
+        this.recuperarElemento("device_id").innerHTML = "";
+        this.recuperarElemento("btnAction").innerHTML = "NEW";
+        this.recuperarElemento("input_name").value = "";
+        this.recuperarElemento("input_description").value = "";
+        modal.style.display = "none";
+    }
+
     private mostrarModal(): void {
         const modal = this.recuperarElemento("modalNuevo");
         // Mostrar el modal
         modal.style.display = "block";
-
         // Al hacer clic en el botón "Cerrar" ocultar el modal y limpiar los campos
         const closeButton = modal.querySelector('.modal-close') as HTMLButtonElement;
         closeButton.addEventListener('click', () => {
-            let select = document.getElementById('select_type') as HTMLSelectElement;
-            select.selectedIndex = 0;
-            this.recuperarElemento("input_name").value = "";
-            this.recuperarElemento("input_description").value = "";
-            modal.style.display = "none";
+            this.ocultarModal();
         });
     }
+
+
 
     // Metodo GET obtener todos los dispositivos
     private getAllDevices(): void {
@@ -150,7 +186,7 @@ class Main implements EventListenerObject {
                                         <i class="material-icons deleteButton" idBd="${item.id}" id="delete_${item.id}" >delete_forever</i>
                                     </button>
                                     <button id="edit_${item.id}" class="btn-floating btn waves-effect waves-light right orange">
-                                        <i class="material-icons editButton">edit</i>
+                                        <i class="material-icons editButton" idBd="${item.id}">edit</i>
                                     </button>
                                     
                                     
@@ -221,26 +257,98 @@ class Main implements EventListenerObject {
             }
         };
 
-        xmlHttp.open("GET", "http://localhost:8000/device/all", true);
+        xmlHttp.open("GET", "http://localhost:8000/device/", true);
         xmlHttp.send();
     }
 
-    // Metodo PUT actualizar estado dispositivo
+    // Metodo GET obtener dispositivo
+    private getDevice(idDevice: number): any {
+        let xmlHttpGet = new XMLHttpRequest();
+
+        let url = "http://localhost:8000/device/";
+        url += idDevice;
+
+        xmlHttpGet.open("GET", url, true);
+        xmlHttpGet.send();
+
+        xmlHttpGet.onreadystatechange = () => {
+            if (!(xmlHttpGet.status === 200)) {
+                M.toast({ html: 'Error al intentar crear el dispositivo', classes: 'rounded waves-effect waves-light red' });
+            }
+            else {
+                try {
+                    let lista = JSON.parse(xmlHttpGet.responseText);
+                    let select = document.getElementById('select_type') as HTMLSelectElement;
+                    select.selectedIndex = lista[0].type;
+                    this.recuperarElemento("device_id").innerHTML = lista[0].id;
+                    this.recuperarElemento("btnAction").innerHTML = "EDIT";
+                    this.recuperarElemento("input_name").value = lista[0].name;
+                    this.recuperarElemento("input_description").value = lista[0].description;
+                } catch (error) {
+
+                }
+
+
+            }
+
+        }
+    }
+
+    // Metodo POST crear dispositivo
+    private createDevice(nameDevice: string, descriptionDevice: string, typeDevice: number): void {
+
+        let messageJSON = { name: nameDevice, description: descriptionDevice, type: typeDevice, state: 0 };
+        let xmlHttpPost = new XMLHttpRequest();
+        let responseMetod = { html: 'Se ha creado el dispositivo', classes: 'rounded waves-effect waves-light green' };
+
+        xmlHttpPost.open("POST", "http://localhost:8000/device/", true);
+        xmlHttpPost.setRequestHeader("Content-Type", "application/json");
+        xmlHttpPost.send(JSON.stringify(messageJSON));
+
+        xmlHttpPost.onreadystatechange = () => {
+            if (!(xmlHttpPost.status === 204)) {
+                responseMetod = { html: 'Error al intentar crear el dispositivo', classes: 'rounded waves-effect waves-light red' };
+            }
+        }
+        M.toast(responseMetod);
+    }
+
+    // Metodo PUT Actualizar Estado Dispositivo
     private updateStateDevice(idDevice: number, stateDevice: number): void {
 
         let messageJSON = { id: idDevice, state: stateDevice };
         let xmlHttpPut = new XMLHttpRequest();
-        let responseMetod = "Estado dispositivo id: " + messageJSON.id + " actualizado.";
+        let responseMetod = { html: 'Se ha actualizado el estado del dispositivo', classes: 'rounded waves-effect waves-light green' };
 
-        xmlHttpPut.open("PUT", "http://localhost:8000/device/state/", true);
+        xmlHttpPut.open("PUT", "http://localhost:8000/device/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
         xmlHttpPut.send(JSON.stringify(messageJSON));
 
         xmlHttpPut.onreadystatechange = () => {
-            if (!(xmlHttpPut.status === 204))
-                responseMetod = "Error al intentar eliminar el dispositivo";
+            if (!(xmlHttpPut.status === 204)) {
+                responseMetod = { html: 'Error al intentar actualizar el estado del dispositivo', classes: 'rounded waves-effect waves-light red' };
+            }
         }
-        alert(responseMetod);
+        M.toast(responseMetod);
+    }
+
+    // Metodo PUT Actualizar Dispositivo
+    private updateDevice(idDevice: number, nameDevice: string, descriptionDevice: string, typeDevice: number): void {
+
+        let messageJSON = { id: idDevice, name: nameDevice, description: descriptionDevice, type: typeDevice };
+        let xmlHttpPut = new XMLHttpRequest();
+        let responseMetod = { html: 'Se ha actualizado el dispositivo', classes: 'rounded waves-effect waves-light green' };
+
+        xmlHttpPut.open("PUT", "http://localhost:8000/device/", true);
+        xmlHttpPut.setRequestHeader("Content-Type", "application/json");
+        xmlHttpPut.send(JSON.stringify(messageJSON));
+
+        xmlHttpPut.onreadystatechange = () => {
+            if (!(xmlHttpPut.status === 204)) {
+                responseMetod = { html: 'Error al intentar actualizar el dispositivo', classes: 'rounded waves-effect waves-light red' };
+            }
+        }
+        M.toast(responseMetod);
     }
 
 
@@ -249,7 +357,7 @@ class Main implements EventListenerObject {
 
         let messageJSON = { id: idDevice };
         let xmlHttpPut = new XMLHttpRequest();
-        let responseMetod = "Dispositivo id: " + messageJSON.id + " eliminado.";
+        let responseMetod = { html: 'Se ha eliminado correctamente el dispositivo', classes: 'rounded waves-effect waves-light green' };
 
         xmlHttpPut.open("DELETE", "http://localhost:8000/device/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
@@ -257,10 +365,10 @@ class Main implements EventListenerObject {
 
         xmlHttpPut.onreadystatechange = () => {
             if (!(xmlHttpPut.status === 204)) {
-                responseMetod = "Error al intentar eliminar el dispositivo";
+                responseMetod = { html: 'Error al intentar eliminar el dispositivo', classes: 'rounded waves-effect waves-light red' };
             }
         }
-        alert(responseMetod);
+        M.toast(responseMetod);
     }
 };
 
