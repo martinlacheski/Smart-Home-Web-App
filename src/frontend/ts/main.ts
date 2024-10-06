@@ -1,5 +1,5 @@
 class Main implements EventListenerObject {
-
+    
     constructor() {
 
         // Ejecutar metodo GET de todos los dispositivos
@@ -320,7 +320,7 @@ class Main implements EventListenerObject {
         let xmlHttpPut = new XMLHttpRequest();
         let responseMetod = { html: 'Se ha actualizado el estado del dispositivo', classes: 'rounded waves-effect waves-light green' };
 
-        xmlHttpPut.open("PUT", "http://localhost:8000/device/", true);
+        xmlHttpPut.open("PUT", "http://localhost:8000/device/state/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
         xmlHttpPut.send(JSON.stringify(messageJSON));
 
