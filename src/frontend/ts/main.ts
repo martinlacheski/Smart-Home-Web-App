@@ -1,3 +1,5 @@
+var M: any;
+
 class Main implements EventListenerObject {
     
     constructor() {
