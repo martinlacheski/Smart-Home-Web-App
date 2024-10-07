@@ -1,7 +1,7 @@
 var M: any;
 
 class Main implements EventListenerObject {
-    
+
     constructor() {
 
         // Ejecutar metodo GET de todos los dispositivos
@@ -27,7 +27,7 @@ class Main implements EventListenerObject {
             let description = this.recuperarElemento("input_description");
             if (type.value === '' || name.value === '' || description.value === '') {
                 alert('Por favor complete los datos del formularios');
-            } 
+            }
 
             // Si el evento es para CREAR UN NUEVO DISPOSITIVO
             else if (this.recuperarElemento("btnAction").textContent === 'NEW') {
@@ -50,7 +50,7 @@ class Main implements EventListenerObject {
                 this.ocultarModal();
                 // Actualizar lista de dispositivos
                 this.getAllDevices();
-            }    
+            }
         }
 
         // Evento Editar Dispositivo
@@ -121,13 +121,17 @@ class Main implements EventListenerObject {
         this.recuperarElemento("btnAction").innerHTML = "NEW";
         this.recuperarElemento("input_name").value = "";
         this.recuperarElemento("input_description").value = "";
-        modal.style.display = "none";
+        
+        var instance = M.Modal.init(modal);
+        instance.close();
     }
 
     private mostrarModal(): void {
-        const modal = this.recuperarElemento("modalNuevo");
         // Mostrar el modal
-        modal.style.display = "block";
+        var modal = this.recuperarElemento("modalNuevo");
+        var instance = M.Modal.init(modal);
+        instance.open();
+
         // Al hacer clic en el botón "Cerrar" ocultar el modal y limpiar los campos
         const closeButton = modal.querySelector('.modal-close') as HTMLButtonElement;
         closeButton.addEventListener('click', () => {

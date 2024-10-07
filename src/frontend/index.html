@@ -8,7 +8,7 @@
     <script type="text/javascript" src="./static/js/materialize.min.js"></script>
     <script src="js/user.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
@@ -20,7 +20,7 @@
                 <a href="#!" class="brand-logo left" style="margin-left: 90px">Smart Home</a>
                 <img src="./static/images/smart_home_white.png" class="brand-logo left"
                     style="margin-top: 5px; margin-left: 10px; position: absolute; max-width: 50px; height: 50px;">
-                <button id="btnNuevo" class="waves-effect waves-light btn-small"
+                <button id="btnNuevo" class="waves-effect waves-light btn-small modal-trigger" href="#modalNuevo"
                     style="position: absolute; right: 12px; top:15px; ">Nuevo Dispositivo</button>
             </div>
         </nav>
@@ -36,8 +36,8 @@
         <div class="modal-content">
             <div class="row">
                 <div class="browser-default col s6">
-                    <label for = "select_type">Tipo de dispositivo</label>
-                    <select class="browser-default" id="select_type" >
+                    <label for="select_type">Tipo de dispositivo</label>
+                    <select class="browser-default" id="select_type">
                         <option value="" disabled selected>Elija una opción</option>
                         <option value="1">Luces ON/OFF</option>
                         <option value="2">Luces dimerizables</option>
@@ -50,7 +50,7 @@
                 <!-- Botones ocultos para asignar el ID del dispositivo y la accion a realizar (dispositivo nuevo o modificacion) hidden -->
                 <button type="button" id="device_id" disabled hidden></button>
                 <button type="button" id="btnAction" disabled hidden>NEW</button>
-                
+
             </div>
             <div class="row">
                 <div class="input-field col s4">
@@ -65,9 +65,9 @@
         </div>
 
         <div class="modal-footer">
-            
+
             <button type="button" id="btnGuardar" class="waves-effect waves-light btn-small">Guardar</button>
-            
+
             <button type="button" id="btnCerrar"
                 class="modal-close waves-effect waves-green red btn-small">Cerrar</button>
         </div>
@@ -79,6 +79,8 @@
         <p class="grey-text text-lighten-4" style="margin-left: 15px">
             Copyright Martin A. Lacheski - 2024
         </p>
+
+        
     </footer>
     <!--JavaScript at end of body for optimized loading-->
 </body>
