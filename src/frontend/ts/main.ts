@@ -183,7 +183,7 @@ class Main implements EventListenerObject {
                         }
 
                         listaDevices += `
-                            <div class="col s12 m3 listDevices">  <!-- 3 columnas por fila -->
+                            <div class="col m3 listDevices">  <!-- 3 columnas por fila -->
                                 <div class="card">
                                     
                                     <div class="card-content">
@@ -279,7 +279,7 @@ class Main implements EventListenerObject {
 
         xmlHttpGet.onreadystatechange = () => {
             if (!(xmlHttpGet.status === 200)) {
-                M.toast({ html: 'Error al intentar crear el dispositivo', classes: 'rounded waves-effect waves-light red' });
+                M.toast({ html: 'Error al intentar obtener el dispositivo', classes: 'rounded waves-effect waves-light red' });
             }
             else {
                 try {
