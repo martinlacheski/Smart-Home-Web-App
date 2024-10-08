@@ -60,7 +60,7 @@ app.post("/device/", function (req, res) {
                 if (err) {
                     res.status(409).send(err.sqlMessage);
                 } else {
-                    res.send(204, resp);
+                    res.status(204).send(resp);
                 }
             }
         );
@@ -77,7 +77,7 @@ app.put('/device/state/', function (req, res) {
             if (err) {
                 res.status(409).send(err.sqlMessage);
             } else {
-                res.send(204, resp);
+                res.status(204).send(resp);
             }
         })
 })
@@ -103,7 +103,7 @@ app.put("/device/", function (req, res) {
                 if (err) {
                     res.status(409).send(err.sqlMessage);
                 } else {
-                    res.send("ok " + resp);
+                    res.status(204).send(resp);
                 }
             }
         );
@@ -121,7 +121,7 @@ app.delete('/device/', function (req, res) {
             if (err) {
                 res.status(409).send(err.sqlMessage);
             } else {
-                res.send(204, resp);
+                res.status(204).send(resp);
             }
         })
 
