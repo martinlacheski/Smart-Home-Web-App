@@ -69,7 +69,7 @@ INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
 (9, 'Ventilador 2', 'Ventilador living', 0.0, 5),
 (10, 'Ventilador 3', 'Ventilador pieza', 0.6, 5),
 (11, 'AC 1', 'Aire acondicionado living', 24.0, 6),
-(12, 'AC 2', 'Aire acondicionado pieza', 0.0, 6)
+(12, 'AC 2', 'Aire acondicionado pieza', 0.0, 6);
 --
 -- Indexes for dumped tables
 --
