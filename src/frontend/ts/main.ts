@@ -160,11 +160,7 @@ class Main implements EventListenerObject {
     private getAllDevices(): void {
 
         // Variable para realizar la petición
-        let xmlHttp = new XMLHttpRequest();
-
-        // Se realiza la petición
-        xmlHttp.open("GET", "http://localhost:8000/device/", true);
-        xmlHttp.send();
+        let xmlHttp = new XMLHttpRequest();        
 
         xmlHttp.onreadystatechange = () => {
             if (xmlHttp.readyState == 4) {
@@ -296,8 +292,11 @@ class Main implements EventListenerObject {
                     alert("ERROR en la consulta");
                 }
             }
-        };
-
+        }
+        
+        // Se realiza la petición
+        xmlHttp.open("GET", "http://localhost:8000/device/", true);
+        xmlHttp.send();
 
     }
 
