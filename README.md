@@ -1,45 +1,47 @@
-<a href="">
-    <span>Smart Home Web App</span>
-    <img src="doc/smart_home_color.png" alt="logo" title="Smart Home" width="40" height="40" />
-</a>
 
 
-- [Introducción](#introducción)
+<img src="doc/smart_home_color.png" alt="logo" title="Smart Home" width="60" height="60" />
+
+Web App Smart Home
+==================
+
+Este proyecto es una aplicación web fullstack que se ejecuta sobre el ecosistema `Docker`. Está compuesta por un compilador de `TypeScript` que permite utilizar un `cliente web`. También tiene un servicio en `NodeJS` que permite ejecutar código en backend y al mismo tiempo disponibilizar el código del cliente web para interactar con el servicio. Además tiene una `base de datos` MySQL que permite interactuar con el backend para guardar y consultar datos, y de manera adicional trae un `administrador` de base de datos para poder administrar la base en caso que lo necesites.
+
+
+
 - [Web App Smart Home](#web-app-smart-home)
-- [Inicialización 🚀](#inicialización-)
-  - [Instalar las dependencias](#instalar-las-dependencias)
-  - [Descargar el código](#descargar-el-código)
-  - [Ejecutar la aplicación](#ejecutar-la-aplicación)
-  - [Detener la aplicación](#detener-la-aplicación)
-  - [Acceder a la aplicación](#acceder-a-la-aplicación)
-- [Configuraciones de funcionamiento 🔩](#configuraciones-de-funcionamiento-)
-  - [Configuración de la DB](#configuración-de-la-db)
-  - [Estructura de la DB](#estructura-de-la-db)
-- [Detalles principales 🔍](#detalles-principales-)
-  - [Arquitectura de la aplicación](#arquitectura-de-la-aplicación)
-  - [El cliente web](#el-cliente-web)
-  - [El servicio web](#el-servicio-web)
-  - [La base de datos](#la-base-de-datos)
-  - [El administrador de la DB](#el-administrador-de-la-db)
-  - [El compilador de TypeScript](#el-compilador-de-typescript)
-  - [Ejecución de servicios](#ejecución-de-servicios)
-  - [Organización del proyecto](#organización-del-proyecto)
-- [Detalles de implementación 💻](#detalles-de-implementación-)
-  - [Agregar un dispositivo](#agregar-un-dispositivo)
-  - [Frontend](#frontend)
-  - [Backend](#backend)
-- [Tecnologías utilizadas 🛠️](#tecnologías-utilizadas-️)
-- [Contribuir 🖇️](#contribuir-️)
-- [Autor 👥](#autor-)
-- [Licencia 📄](#licencia-)
+  - [Introducción](#introducción)
+  - [Inicialización 🚀](#inicialización-)
+    - [Instalar las dependencias](#instalar-las-dependencias)
+    - [Descargar el código](#descargar-el-código)
+    - [Ejecutar la aplicación](#ejecutar-la-aplicación)
+    - [Detener la aplicación](#detener-la-aplicación)
+    - [Acceder a la aplicación](#acceder-a-la-aplicación)
+  - [Configuraciones de funcionamiento 🔩](#configuraciones-de-funcionamiento-)
+    - [Configuración de la DB](#configuración-de-la-db)
+    - [Estructura de la DB](#estructura-de-la-db)
+  - [Detalles principales 🔍](#detalles-principales-)
+    - [Arquitectura de la aplicación](#arquitectura-de-la-aplicación)
+    - [El cliente web](#el-cliente-web)
+    - [El servicio web](#el-servicio-web)
+    - [La base de datos](#la-base-de-datos)
+    - [El administrador de la DB](#el-administrador-de-la-db)
+    - [El compilador de TypeScript](#el-compilador-de-typescript)
+    - [Ejecución de servicios](#ejecución-de-servicios)
+    - [Organización del proyecto](#organización-del-proyecto)
+  - [Detalles de implementación 💻](#detalles-de-implementación-)
+    - [Agregar un dispositivo](#agregar-un-dispositivo)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+  - [Tecnologías utilizadas 🛠️](#tecnologías-utilizadas-️)
+  - [Contribuir 🖇️](#contribuir-️)
+  - [Autor 👥](#autor-)
+  - [Licencia 📄](#licencia-)
 
 ## Introducción
 
 El proyecto corresponde al trabajo final realizado para la asignatura **Desarrollo de Aplicaciones Web** de la *Especialización en Internet de las Cosas* dictada en la *Facultad de Ingenieria* de la *Universidad de Buenos Aires*.
 
-## Web App Smart Home
-
-Este proyecto es una aplicación web fullstack que se ejecuta sobre el ecosistema `Docker`. Está compuesta por un compilador de `TypeScript` que permite utilizar un `cliente web`. También tiene un servicio en `NodeJS` que permite ejecutar código en backend y al mismo tiempo disponibilizar el código del cliente web para interactar con el servicio. Además tiene una `base de datos` MySQL que permite interactuar con el backend para guardar y consultar datos, y de manera adicional trae un `administrador` de base de datos para poder administrar la base en caso que lo necesites.
 
 La base de datos consta de una tabla `Devices` con los campos `id` de tipo **integer** y autoincremental, `name` de tipo **string(64)**, `description` de tipo **string(128)**, `state` de tipo **decimal(10,1)** y `type` de tipo **integer**, que referencia a un tipo especificado de dispositivo.
 
