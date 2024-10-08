@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.0
+
+* Project modification
+    * Frontend re-design and implementation
+    * Endpoint development in the backend
+    * Change data type of state field in database
+    * Adds new info to README accordingly
+    * Changes project architecture image
+
 ## 2.2.0
 
 * Project modification

@@ -1,3 +1,4 @@
+//Declaración Variable M (para evitar error inicial de Materialize)
 var M: any;
 
 class Main implements EventListenerObject {
@@ -7,6 +8,7 @@ class Main implements EventListenerObject {
         // Ejecutar metodo GET de todos los dispositivos
         this.getAllDevices();
 
+        // Recuperar elementos y agregar evento 'click'
         let btnNuevo = this.recuperarElemento("btnNuevo");
         btnNuevo.addEventListener('click', () => this.mostrarModal());
         let btnGuardar = this.recuperarElemento("btnGuardar");
@@ -16,15 +18,19 @@ class Main implements EventListenerObject {
     handleEvent(object: Event): void {
         // Obtener el elemento que se activa
         let elemento = (<HTMLElement>object.target);
-
-        // Verificar el método a realizar
+        /*
+         Verificar el método a realizar
+        */
 
         //Evento Crear dispositivo
         if (elemento.id == 'btnGuardar') {
 
+            // Asignar a variables los valores de los campos
             let type = this.recuperarElemento("select_type");
             let name = this.recuperarElemento("input_name");
             let description = this.recuperarElemento("input_description");
+
+            // Verificar que los datos no sean nulos
             if (type.value === '' || name.value === '' || description.value === '') {
                 alert('Por favor complete los datos del formularios');
             }
@@ -43,6 +49,7 @@ class Main implements EventListenerObject {
             // Si el evento es para EDITAR UN DISPOSITO
             else if (this.recuperarElemento("btnAction").textContent === 'EDIT') {
 
+                // Recuperar el ID del dispositivo
                 let device_id = this.recuperarElemento("device_id");
                 // Ejecutar método EDITAR Dispositivo
                 this.updateDevice(parseInt(device_id.textContent), name.value, description.value, parseInt(type.value))
@@ -55,10 +62,13 @@ class Main implements EventListenerObject {
 
         // Evento Editar Dispositivo
         else if (elemento.className.includes('editButton')) {
+            // Obtener el elemento INPUT que se activa
             let input = <HTMLInputElement>object.target;
+            // Recuperar el ID del dispositivo
             let deviceID = input.getAttribute("idBd");
             // Ejecutar metodo GET para obtener los datos del dispositivo
             let device = this.getDevice(parseInt(deviceID));
+            // Ejecutar método Mostrar el modal
             this.mostrarModal();
         }
 
@@ -74,11 +84,13 @@ class Main implements EventListenerObject {
 
         // Evento Actualizar Estado de Dispositivo
         else {
+            // Obtener el elemento INPUT que se activa
             let input = <HTMLInputElement>object.target;
 
+            // Verificar tipo de INPUT
             if (input.type === "checkbox") {
-                /* Se consulta si el tipo de dispositivo es AA y se está encendiendo, 
-                como para enviar la temperatura 24º por defecto y cambiar el INPUT a Rango.*/
+                /* Se consulta si el tipo de dispositivo es AA y si se está encendiendo, 
+                enviar la temperatura 24º por defecto y cambiar el INPUT a RANGE.*/
                 if (parseInt(input.getAttribute("typedevice")) === 6 && input.checked === true) {
                     // Ejecutar método ACTUALIZAR ESTADO Dispositivo
                     this.updateStateDevice(parseInt(input.getAttribute("idBd")), 24);
@@ -105,6 +117,7 @@ class Main implements EventListenerObject {
         }
     }
 
+    // Métodos privados
     private recuperarElemento(id: string): HTMLInputElement {
         return <HTMLInputElement>document.getElementById(id);
     }
@@ -114,14 +127,18 @@ class Main implements EventListenerObject {
     }
 
     private ocultarModal(): void {
+        // Declarar una constante para interactuar con el MODAL
         const modal = this.recuperarElemento("modalNuevo");
+
+        // Limpiar los campos
         let select = document.getElementById('select_type') as HTMLSelectElement;
         select.selectedIndex = 0;
         this.recuperarElemento("device_id").innerHTML = "";
         this.recuperarElemento("btnAction").innerHTML = "NEW";
         this.recuperarElemento("input_name").value = "";
         this.recuperarElemento("input_description").value = "";
-        
+
+        // Cerrar modal
         var instance = M.Modal.init(modal);
         instance.close();
     }
@@ -132,18 +149,22 @@ class Main implements EventListenerObject {
         var instance = M.Modal.init(modal);
         instance.open();
 
-        // Al hacer clic en el botón "Cerrar" ocultar el modal y limpiar los campos
+        // Al hacer clic en el botón "Cerrar" ocultar el modal
         const closeButton = modal.querySelector('.modal-close') as HTMLButtonElement;
         closeButton.addEventListener('click', () => {
             this.ocultarModal();
         });
     }
 
-
-
     // Metodo GET obtener todos los dispositivos
     private getAllDevices(): void {
+
+        // Variable para realizar la petición
         let xmlHttp = new XMLHttpRequest();
+
+        // Se realiza la petición
+        xmlHttp.open("GET", "http://localhost:8000/device/", true);
+        xmlHttp.send();
 
         xmlHttp.onreadystatechange = () => {
             if (xmlHttp.readyState == 4) {
@@ -151,8 +172,10 @@ class Main implements EventListenerObject {
                     let ul = this.recuperarElemento("list");
                     let listaDevices: string = '<div class="row">'; // Iniciar fila
 
+                    // Obtener el ARRAY de dispositivos
                     let lista: Array<Device> = JSON.parse(xmlHttp.responseText);
 
+                    // Iterar el ARRAY para cargar los dispositivos en la página
                     for (let item of lista) {
 
                         // Variable para almacenar la ruta de la imagen segun el tipo de dispositivo
@@ -178,10 +201,16 @@ class Main implements EventListenerObject {
                             case 6:  // Aire acondicionado (temperatura variable)
                                 imgSrc = './static/images/aa_1.png';
                                 break;
+                            // Imagen por defecto si no coincide con ningún tipo
                             default:
-                                imgSrc = './static/images/default.png';  // Imagen por defecto si no coincide con ningún tipo
+                                imgSrc = './static/images/default.png';
                         }
 
+                        /* 
+                            Cargar la imagen correspondiente
+                            Crear botonos de EDIT y DELETE por cada Dispositivo, y con el ID correspondiente
+                            Colocar los campos "name" y "description"
+                        */
                         listaDevices += `
                             <div class="col m3 listDevices">  <!-- 3 columnas por fila -->
                                 <div class="card">
@@ -212,6 +241,7 @@ class Main implements EventListenerObject {
                                 </label>
                             </div>`;
                         }
+
                         // Si el tipo es 2 (Luces dimerizables), 3 (Persianas), 5 (Ventiladores), usar un rango (barra deslizante)
                         else if (item.type === 2 || item.type === 3 || item.type === 5 && item.state >= 0 && item.state <= 1) {
                             listaDevices += `
@@ -219,6 +249,7 @@ class Main implements EventListenerObject {
                                 <input idBd="${item.id}" typedevice="${item.type}" type="range" id="device_${item.id}" deleteDevice min="0.0" max="1.0" step="0.1" value="${item.state}">
                             </div>`;
                         }
+
                         // Si el tipo es 6 (Aire acondicionado temperatura variable pero está apagado), usar un checkbox
                         else if (item.type === 6 && item.state < 16.0) {
                             listaDevices += `
@@ -231,6 +262,7 @@ class Main implements EventListenerObject {
                                 </label>
                             </div>`;
                         }
+
                         // Si el tipo es 6 (Aire acondicionado temperatura variable entre 16 y 30), usar un rango (barra deslizante)
                         else if (item.type === 6 && item.state >= 16.0 && item.state <= 30.0) {
                             listaDevices += `
@@ -239,16 +271,19 @@ class Main implements EventListenerObject {
                             </div>`;
                         }
 
+                        // Cerrar fila
                         listaDevices += `              
                                     </div>
                                 </div>
                             </div>`;
                     }
+                    // Cerrar Lista de Dispositivos
+                    listaDevices += '</div>';
 
-                    listaDevices += '</div>'; // Cerrar fila
+                    // Insertar la lista de dispositivos en el HTML
                     ul.innerHTML = listaDevices;
 
-                    // Agregar eventos a los botones
+                    // Por cada Dispositivo de la lista, Agregar los eventos a los botones
                     for (let item of lista) {
                         let state = this.recuperarElemento("device_" + item.id);
                         let editBtn = this.recuperarButtonDelete("edit_" + item.id);
@@ -263,26 +298,32 @@ class Main implements EventListenerObject {
             }
         };
 
-        xmlHttp.open("GET", "http://localhost:8000/device/", true);
-        xmlHttp.send();
+
     }
 
     // Metodo GET obtener dispositivo
     private getDevice(idDevice: number): any {
+
+        // Variable para realizar la petición
         let xmlHttpGet = new XMLHttpRequest();
 
+        // Se establece la ruta incorporando el ID del dispositivo
         let url = "http://localhost:8000/device/";
         url += idDevice;
 
+        // Se realiza la petición
         xmlHttpGet.open("GET", url, true);
         xmlHttpGet.send();
 
+        // Se analiza el cambio de estado
         xmlHttpGet.onreadystatechange = () => {
-            if (!(xmlHttpGet.status === 200)) {
-                M.toast({ html: 'Error al intentar obtener el dispositivo', classes: 'rounded waves-effect waves-light red' });
-            }
-            else {
-                try {
+            if (xmlHttpGet.readyState == 4) {
+                //Se devuelve el error
+                if (!(xmlHttpGet.status === 200)) {
+                    M.toast({ html: 'Error al intentar obtener el dispositivo', classes: 'rounded waves-effect waves-light red' });
+                }
+                // Si no hay error se cargan los datos obtenidos del dispositivo a los elementos del modal
+                else {
                     let lista = JSON.parse(xmlHttpGet.responseText);
                     let select = document.getElementById('select_type') as HTMLSelectElement;
                     select.selectedIndex = lista[0].type;
@@ -290,98 +331,126 @@ class Main implements EventListenerObject {
                     this.recuperarElemento("btnAction").innerHTML = "EDIT";
                     this.recuperarElemento("input_name").value = lista[0].name;
                     this.recuperarElemento("input_description").value = lista[0].description;
-                } catch (error) {
-
                 }
-
-
             }
-
         }
     }
 
     // Metodo POST crear dispositivo
     private createDevice(nameDevice: string, descriptionDevice: string, typeDevice: number): void {
 
+        // Variable para armar el mensaje en formato JSON
         let messageJSON = { name: nameDevice, description: descriptionDevice, type: typeDevice, state: 0 };
+
+        // Variable para realizar la petición
         let xmlHttpPost = new XMLHttpRequest();
+
+        // Variable para el texto de respuesta
         let responseMetod = { html: 'Se ha creado el dispositivo', classes: 'rounded waves-effect waves-light green' };
 
+        // Se realiza la petición
         xmlHttpPost.open("POST", "http://localhost:8000/device/", true);
         xmlHttpPost.setRequestHeader("Content-Type", "application/json");
         xmlHttpPost.send(JSON.stringify(messageJSON));
 
+        // Se analiza el cambio de estado (Si tiene error se devuelve el mensaje de error)
         xmlHttpPost.onreadystatechange = () => {
             if (!(xmlHttpPost.status === 204)) {
                 responseMetod = { html: 'Error al intentar crear el dispositivo', classes: 'rounded waves-effect waves-light red' };
             }
         }
+
+        // Se ejecuta el TOAST con la respuesta
         M.toast(responseMetod);
     }
 
     // Metodo PUT Actualizar Estado Dispositivo
     private updateStateDevice(idDevice: number, stateDevice: number): void {
 
+        // Variable para armar el mensaje en formato JSON
         let messageJSON = { id: idDevice, state: stateDevice };
+
+        // Variable para realizar la petición
         let xmlHttpPut = new XMLHttpRequest();
+
+        // Variable para el texto de respuesta
         let responseMetod = { html: 'Se ha actualizado el estado del dispositivo', classes: 'rounded waves-effect waves-light green' };
 
+        // Se realiza la petición
         xmlHttpPut.open("PUT", "http://localhost:8000/device/state/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
         xmlHttpPut.send(JSON.stringify(messageJSON));
 
+        // Se analiza el cambio de estado (Si tiene error se devuelve el mensaje de error)
         xmlHttpPut.onreadystatechange = () => {
             if (!(xmlHttpPut.status === 204)) {
                 responseMetod = { html: 'Error al intentar actualizar el estado del dispositivo', classes: 'rounded waves-effect waves-light red' };
             }
         }
+
+        // Se ejecuta el TOAST con la respuesta
         M.toast(responseMetod);
     }
 
     // Metodo PUT Actualizar Dispositivo
     private updateDevice(idDevice: number, nameDevice: string, descriptionDevice: string, typeDevice: number): void {
 
+        // Variable para armar el mensaje en formato JSON
         let messageJSON = { id: idDevice, name: nameDevice, description: descriptionDevice, type: typeDevice };
+
+        // Variable para realizar la petición
         let xmlHttpPut = new XMLHttpRequest();
+
+        // Variable para el texto de respuesta
         let responseMetod = { html: 'Se ha actualizado el dispositivo', classes: 'rounded waves-effect waves-light green' };
 
+        // Se realiza la petición
         xmlHttpPut.open("PUT", "http://localhost:8000/device/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
         xmlHttpPut.send(JSON.stringify(messageJSON));
 
+        // Se analiza el cambio de estado (Si tiene error se devuelve el mensaje de error)
         xmlHttpPut.onreadystatechange = () => {
             if (!(xmlHttpPut.status === 204)) {
                 responseMetod = { html: 'Error al intentar actualizar el dispositivo', classes: 'rounded waves-effect waves-light red' };
             }
         }
+
+        // Se ejecuta el TOAST con la respuesta
         M.toast(responseMetod);
     }
-
 
     // Metodo DELETE Eliminar dispositivo
     private deleteDevice(idDevice: number): void {
 
+        // Variable para armar el mensaje en formato JSON
         let messageJSON = { id: idDevice };
+
+        // Variable para realizar la petición
         let xmlHttpPut = new XMLHttpRequest();
+
+        // Variable para el texto de respuesta
         let responseMetod = { html: 'Se ha eliminado correctamente el dispositivo', classes: 'rounded waves-effect waves-light green' };
 
+        // Se realiza la petición
         xmlHttpPut.open("DELETE", "http://localhost:8000/device/", true);
         xmlHttpPut.setRequestHeader("Content-Type", "application/json");
         xmlHttpPut.send(JSON.stringify(messageJSON));
 
+        // Se analiza el cambio de estado (Si tiene error se devuelve el mensaje de error)
         xmlHttpPut.onreadystatechange = () => {
             if (!(xmlHttpPut.status === 204)) {
                 responseMetod = { html: 'Error al intentar eliminar el dispositivo', classes: 'rounded waves-effect waves-light red' };
             }
         }
+
+        // Se ejecuta el TOAST con la respuesta
         M.toast(responseMetod);
     }
 };
 
-
-
-
 window.addEventListener('load', () => {
+    // Variable para instanciar la clase MAIN
     let main: Main = new Main();
 });
 

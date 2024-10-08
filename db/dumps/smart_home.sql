@@ -44,6 +44,19 @@ CREATE TABLE `Devices` (
 -- Dumping data for table `Devices`
 --
 
+/*
+Se definen los siguientes Dispositivos iniciales, 
+con los tipos de dispositivos establecidos para el desarrollo de esta instancia
+
+---Type of DEVICES---
+1 = Luces ON/OFF
+2 = Luces dimerizables
+3 = Persianas (Apertura variable)
+4 = Enchufes ON/OFF
+5 = Ventiladores (Apertura variable)
+6 = Aire acondicionado (temperatura variable)
+*/
+
 INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
 (1, 'Lampara 1', 'Luz living', 1, 1),
 (2, 'Lampara 2', 'Luz cocina', 0, 1),
@@ -57,19 +70,6 @@ INSERT INTO `Devices` (`id`, `name`, `description`, `state`, `type`) VALUES
 (10, 'Ventilador 3', 'Ventilador pieza', 0.6, 5),
 (11, 'AC 1', 'Aire acondicionado living', 24.0, 6),
 (12, 'AC 2', 'Aire acondicionado pieza', 0.0, 6)
-
-
-/*
----Type of DEVICES---
-1 = Luces ON/OFF
-2 = Luces dimerizables
-3 = Persianas (Apertura variable)
-4 = Enchufes ON/OFF
-5 = Ventiladores (Apertura variable)
-6 = Aire acondicionado (temperatura variable)
-*/
-
-
 --
 -- Indexes for dumped tables
 --

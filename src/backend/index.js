@@ -13,9 +13,7 @@ app.use(express.static("/home/node/app/static/"));
 
 //=======[ Main module code ]==================================================
 
-//----[Endpoints Devices]----
-
-//Obtener todos los dispositivos
+// Obtener todos los dispositivos
 app.get("/device/", function (req, res) {
     utils.query("SELECT * FROM Devices", (error, respuesta, fields) => {
         if (error) {
@@ -26,7 +24,7 @@ app.get("/device/", function (req, res) {
     });
 });
 
-//Obtener un determinado dispositivo
+// Obtener un determinado dispositivo
 app.get("/device/:id", function (req, res) {
     utils.query(
         "SELECT * FROM Devices where id=" + req.params.id,
@@ -40,7 +38,7 @@ app.get("/device/:id", function (req, res) {
     );
 });
 
-//Insertar un nuevo dispositivo
+// Insertar un nuevo dispositivo
 app.post("/device/", function (req, res) {
     if (
         req.body.name != undefined &&
@@ -62,7 +60,7 @@ app.post("/device/", function (req, res) {
                 if (err) {
                     res.status(409).send(err.sqlMessage);
                 } else {
-                    res.send("ok " + resp);
+                    res.send(204, resp);
                 }
             }
         );
@@ -72,7 +70,7 @@ app.post("/device/", function (req, res) {
 });
 
 
-//Actualizar el estado de un dispositivo
+// Actualizar el estado de un dispositivo
 app.put('/device/state/', function (req, res) {
     utils.query("update Devices set state=" + req.body.state + " where id=" + req.body.id,
         (err, resp, meta) => {
@@ -84,7 +82,7 @@ app.put('/device/state/', function (req, res) {
         })
 })
 
-//Actualizar los datos de un dispositivo
+// Actualizar los datos de un dispositivo
 app.put("/device/", function (req, res) {
     if (
         req.body.id != undefined &&
@@ -115,7 +113,7 @@ app.put("/device/", function (req, res) {
 
 });
 
-//Eliminar un dispositivo
+// Eliminar un dispositivo
 app.delete('/device/', function (req, res) {
 
     utils.query("delete from Devices where id=" + req.body.id,
@@ -129,8 +127,7 @@ app.delete('/device/', function (req, res) {
 
 })
 
+// Mensaje inicial
 app.listen(PORT, function (req, res) {
     console.log("NodeJS API running correctly");
 });
-
-//=======[ End of file ]=======================================================

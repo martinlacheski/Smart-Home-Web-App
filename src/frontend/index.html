@@ -18,8 +18,10 @@
         <nav style="background-color: #124580">
             <div id="xx" class="nav-wrapper">
                 <a href="" class="brand-logo left" style="margin-left: 90px">Smart Home</a>
+                <!-- Logo de la aplicación -->
                 <img src="./static/images/smart_home_white.png" class="brand-logo left"
                     style="margin-top: 5px; margin-left: 10px; position: absolute; max-width: 50px; height: 50px;">
+                <!-- Boton Nuevo Dispositivo (Interacción c/Modal) -->
                 <button id="btnNuevo" class="waves-effect waves-light btn-small modal-trigger" href="#modalNuevo"
                     style="position: absolute; right: 12px; top:15px; ">Nuevo Dispositivo</button>
             </div>
@@ -30,11 +32,12 @@
         </div>
     </main>
 
-    <!-- Modal Structure -->
+    <!-- Estructura del Modal -->
     <div id="modalNuevo" class="modal">
         <div class="modal-content">
             <div class="row">
                 <div class="browser-default col s6">
+                    <!-- Select Tipo de Dispositivo -->
                     <label for="select_type">Tipo de dispositivo</label>
                     <select class="browser-default" id="select_type">
                         <option value="" disabled selected>Elija una opción</option>
@@ -46,24 +49,27 @@
                         <option value="6">Aire acondicionado (Temperatura variable)</option>
                     </select>
                 </div>
-                <!-- Botones ocultos para asignar el ID del dispositivo y la accion a realizar (dispositivo nuevo o modificacion) hidden -->
+                <!-- Botones ocultos para asignar el ID del dispositivo y la accion a realizar (dispositivo nuevo o modificacion) -->
                 <button type="button" id="device_id" disabled hidden></button>
                 <button type="button" id="btnAction" disabled hidden>NEW</button>
 
             </div>
             <div class="row">
+                <!-- Botones name y description -->
                 <div class="input-field col s4">
                     <input placeholder="Nombre" id="input_name" type="text" autocomplete="off">
                     <label for="input_name">Ingrese el nombre</label>
                 </div>
                 <div class="input-field col s8">
                     <input placeholder="Descripción" id="input_description" type="text" autocomplete="off">
-                    <label for="input_description">Ingrese una descripcion</label>
+                    <label for="input_description">Ingrese una descripción</label>
                 </div>
             </div>
         </div>
 
+
         <div class="modal-footer">
+            <!-- Botón para guardar (Nuevo Dispositivo/Modificar dispositivo) -->
             <button type="button" id="btnGuardar" class="waves-effect waves-light btn-small">Guardar</button>
 
             <button type="button" id="btnCerrar"

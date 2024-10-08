@@ -1,103 +1,153 @@
-<a href="https://www.gotoiot.com/">
-    <img src="doc/gotoiot-logo.png" alt="logo" title="Goto IoT" align="right" width="60" height="60" />
+<a href="">
+    <span>Smart Home Web App</span>
+    <img src="doc/smart_home_color.png" alt="logo" title="Smart Home" width="40" height="40" />
 </a>
 
-Web App Full Stack Base
-=======================
 
-*Ayudaría mucho si apoyaras este proyecto con una ⭐ en Github!*
+- [Introducción](#introducción)
+- [Web App Smart Home](#web-app-smart-home)
+- [Inicialización 🚀](#inicialización-)
+  - [Instalar las dependencias](#instalar-las-dependencias)
+  - [Descargar el código](#descargar-el-código)
+  - [Ejecutar la aplicación](#ejecutar-la-aplicación)
+  - [Detener la aplicación](#detener-la-aplicación)
+  - [Acceder a la aplicación](#acceder-a-la-aplicación)
+- [Configuraciones de funcionamiento 🔩](#configuraciones-de-funcionamiento-)
+  - [Configuración de la DB](#configuración-de-la-db)
+  - [Estructura de la DB](#estructura-de-la-db)
+- [Detalles principales 🔍](#detalles-principales-)
+  - [Arquitectura de la aplicación](#arquitectura-de-la-aplicación)
+  - [El cliente web](#el-cliente-web)
+  - [El servicio web](#el-servicio-web)
+  - [La base de datos](#la-base-de-datos)
+  - [El administrador de la DB](#el-administrador-de-la-db)
+  - [El compilador de TypeScript](#el-compilador-de-typescript)
+  - [Ejecución de servicios](#ejecución-de-servicios)
+  - [Organización del proyecto](#organización-del-proyecto)
+- [Detalles de implementación 💻](#detalles-de-implementación-)
+  - [Agregar un dispositivo](#agregar-un-dispositivo)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [Tecnologías utilizadas 🛠️](#tecnologías-utilizadas-️)
+- [Contribuir 🖇️](#contribuir-️)
+- [Autor 👥](#autor-)
+- [Licencia 📄](#licencia-)
 
-Este proyecto es una aplicación web fullstack que se ejecuta sobre el ecosistema `Docker`. Está compuesta por un compilador de `TypeScript` que te permite utilizar este superset de JavaScript para poder programar un `cliente web`. También tiene un servicio en `NodeJS` que te permite ejecutar código en backend y al mismo tiempo disponibilizar el código del cliente web para interactar con el servicio. Además tiene una `base de datos` MySQL que puede interactuar con el backend para guardar y consultar datos, y de manera adicional trae un `administrador` de base de datos para poder administrar la base en caso que lo necesites.
+## Introducción
 
-La aplicación IoT de base que viene con este proyecto se encarga de crear una tabla llamada `Devices` en la base de datos, y la idea es que vos puedas desarrollar el código de backend y frontend que te permita controlar desde el navegador el estado de los devices de un hogar inteligente - *como pueden ser luces, TVs, ventiladores, persianas, enchufes y otros* - y almacenar los estados de cada uno en la base de datos. 
+El proyecto corresponde al trabajo final realizado para la asignatura **Desarrollo de Aplicaciones Web** de la *Especialización en Internet de las Cosas* dictada en la *Facultad de Ingenieria* de la *Universidad de Buenos Aires*.
 
-Realizando estas tareas vas a a tener una aplicación fullstack IoT del mundo real que utiliza tecnologías actuales en la que un backend es capaz de interactuar con una DB para cumplir con las peticiones de control que se le mandan desde el cliente web.
+## Web App Smart Home
 
-En esta imagen podés ver una posible implementación del cliente web que controla los artefactos del hogar.
+Este proyecto es una aplicación web fullstack que se ejecuta sobre el ecosistema `Docker`. Está compuesta por un compilador de `TypeScript` que permite utilizar un `cliente web`. También tiene un servicio en `NodeJS` que permite ejecutar código en backend y al mismo tiempo disponibilizar el código del cliente web para interactar con el servicio. Además tiene una `base de datos` MySQL que permite interactuar con el backend para guardar y consultar datos, y de manera adicional trae un `administrador` de base de datos para poder administrar la base en caso que lo necesites.
 
-![architecture](doc/webapp-example-1.png)
+La base de datos consta de una tabla `Devices` con los campos `id` de tipo **integer** y autoincremental, `name` de tipo **string(64)**, `description` de tipo **string(128)**, `state` de tipo **decimal(10,1)** y `type` de tipo **integer**, que referencia a un tipo especificado de dispositivo.
 
-## Comenzando 🚀
+En esta instancia del proyecto los tipos de dispositivos son especificados manualmente. En futuras iteraciones se creará la tabla `Type Devices` a fin de guardar la información y el icono correspondiente al tipo de dispositivo.
 
-Esta sección es una guía con los pasos escenciales para que puedas poner en marcha la aplicación.
+Además, próximamente, la aplicación permitirá controlar desde el navegador el estado de los dispositivos de un hogar inteligente - *como pueden ser luces, TVs, ventiladores, persianas, enchufes y otros* - y almacenar los estados de cada uno en la base de datos. 
 
-<details><summary><b>Mira los pasos necesarios</b></summary><br>
+En esta imagen se puede visualizar una captura de pantalla del cliente web que controla los artefactos del hogar.
+
+![architecture](doc/captura-webapp.png)
+
+## Inicialización 🚀
+
+Esta sección es una guía con los pasos esenciales para que se pueda poner en marcha la aplicación.
+
+<details><summary><b>Mirar los pasos necesarios</b></summary><br>
 
 ### Instalar las dependencias
 
-Para correr este proyecto es necesario que instales `Docker` y `Docker Compose`. 
+Para correr este proyecto es necesario que se instale `Docker` y `Docker Compose`. 
 
-En [este artículo](https://www.gotoiot.com/pages/articles/docker_installation_linux/) publicado en nuestra web están los detalles para instalar Docker y Docker Compose en una máquina Linux. Si querés instalar ambas herramientas en una Raspberry Pi podés seguir [este artículo](https://www.gotoiot.com/pages/articles/rpi_docker_installation) de nuestra web que te muestra todos los pasos necesarios.
+En [este artículo](https://www.gotoiot.com/pages/articles/docker_installation_linux/) publicado se encuentran los detalles para instalar Docker y Docker Compose en una máquina Linux.
 
-En caso que quieras instalar las herramientas en otra plataforma o tengas algún incoveniente, podes leer la documentación oficial de [Docker](https://docs.docker.com/get-docker/) y también la de [Docker Compose](https://docs.docker.com/compose/install/).
+En caso que se quiera instalar las herramientas en otra plataforma o tengas algún incoveniente, se puede leer la documentación oficial de [Docker](https://docs.docker.com/get-docker/) y también la de [Docker Compose](https://docs.docker.com/compose/install/).
 
-Continua con la descarga del código cuando tengas las dependencias instaladas y funcionando.
+Continuar con la descarga del código cuando las dependencias estén instaladas y funcionando.
 
 ### Descargar el código
 
-Para descargar el código, lo más conveniente es que realices un `fork` de este proyecto a tu cuenta personal haciendo click en [este link](https://github.com/gotoiot/app-fullstack-base/fork). Una vez que ya tengas el fork a tu cuenta, descargalo con este comando (acordate de poner tu usuario en el link):
+Para descargar el código, lo más conveniente es realizar un `fork` de este proyecto en tu cuenta personal haciendo click en [este link](https://github.com/martinlacheski/app-fullstack-base-2024-i10/fork). Una vez que ya tengas el fork a tu cuenta, descargalo con este comando (acordate de poner tu usuario en el link):
 
 ```
-git clone https://github.com/USER/app-fullstack-base.git
+git clone https://github.com/USUARIO/app-fullstack-base-2024-i10.git
 ```
 
-> En caso que no tengas una cuenta en Github podes clonar directamente este repo.
+> En caso que no se posea una cuenta en Github se puede clonar directamente este repositorio.
 
 ### Ejecutar la aplicación
 
-Para ejecutar la aplicación tenes que correr el comando `docker-compose up` desde la raíz del proyecto. Este comando va a descargar las imágenes de Docker de node, de typescript, de la base datos y del admin de la DB, y luego ponerlas en funcionamiento. 
+Para ejecutar la aplicación se tiene que correr el comando desde la raíz del proyecto: 
 
-Para acceder al cliente web ingresa a a la URL [http://localhost:8000/](http://localhost:8000/) y para acceder al admin de la DB accedé a [localhost:8001/](http://localhost:8001/). 
+```sh
+docker-compose up
+```
+Este comando va a descargar las imágenes de Docker de node, de typescript, de la base datos y del admin de la DB, y luego ponerlas en funcionamiento. 
 
-Si pudiste acceder al cliente web y al administrador significa que la aplicación se encuentra corriendo bien. 
+### Detener la aplicación
 
-> Si te aparece un error la primera vez que corres la app, deteńe el proceso y volvé a iniciarla. Esto es debido a que el backend espera que la DB esté creada al iniciar, y en la primera ejecución puede no alcanzar a crearse. A partir de la segunda vez el problema queda solucionado.
+Para detener la aplicación es necesario ejecutar el siguiente comando:
+
+```sh
+docker-compose down
+```
+También es posible realizar `Ctrl-C` desde el shell o terminal donde se encuentra corriendo el sistema.
+
+### Acceder a la aplicación
+
+Para acceder al cliente web ingresar a a la URL [http://localhost:8000/](http://localhost:8000/) y para acceder al admin de la DB acceder a [localhost:8001/](http://localhost:8001/). 
+
+Si se pudo acceder al cliente web y al administrador significa que la aplicación se ejecuta correctamente. 
+
+> Si aparece un error la primera vez que se corre la aplicación, detener el proceso y volver a iniciarla. Esto es debido a que el backend espera que la base de datos esté creada al iniciar, y en la primera ejecución puede no alcanzar a crearse. A partir de la segunda vez el problema queda solucionado.
 
 </details>
 
-Continuá explorando el proyecto una vez que lo tengas funcionando.
+Continuar explorando el proyecto una vez que esté funcionando.
 
 ## Configuraciones de funcionamiento 🔩
 
-Al crearse la aplicación se ejecutan los contenedores de Docker de cada servicio, se crea la base de datos y sus tablas. A continuación podés encontrar info si querés cambiar la estructura de la DB o bien sus configuraciones de acceso.
+Al crearse la aplicación se ejecutan los contenedores de Docker de cada servicio, se crea la base de datos y sus tablas. A continuación se puede encontrar información si se quiere cambiar la estructura de la DB o bien sus configuraciones de acceso.
 
-<details><summary><b>Lee cómo configurar la aplicación</b></summary><br>
+<details><summary><b>Leer cómo configurar la aplicación</b></summary><br>
 
 ### Configuración de la DB
 
-Como ya comprobaste, para acceder PHPMyAdmin tenés que ingresar en la URL [localhost:8001/](http://localhost:8001/). En el login del administrador, el usuario para acceder a la db es `root` y contraseña es la variable `MYSQL_ROOT_PASSWORD` del archivo `docker-compose.yml`.
+Para acceder a **PHPMyAdmin** se tiene que ingresar en la URL [localhost:8001/](http://localhost:8001/). En el login del administrador, el usuario para acceder a la db es `root` y contraseña es la variable `MYSQL_ROOT_PASSWORD` que se encuentra en el archivo `docker-compose.yml`.
 
-Para el caso del servicio de NodeJS que se comunica con la DB fijate que en el archivo `src/backend/mysql-connector.js` están los datos de acceso para ingresar a la base.
+Para el caso del servicio de NodeJS que se comunica con la DB fijarse que en el archivo `src/backend/mysql-connector.js` están los datos de acceso para ingresar a la base.
 
-Si quisieras cambiar la contraseña, puertos, hostname u otras configuraciones de la DB deberías primero modificar el servicio de la DB en el archivo `docker-compose.yml` y luego actualizar las configuraciones para acceder desde PHPMyAdmin y el servicio de NodeJS.
+Si quisiera cambiar la contraseña, puertos, hostname u otras configuraciones de la base de datos se debería modificar primero el servicio de la base de datos en el archivo `docker-compose.yml` y luego actualizar las configuraciones para acceder desde PHPMyAdmin y el servicio de NodeJS.
 
 ### Estructura de la DB
 
-Al iniciar el servicio de la base de datos, si esta no está creada toma el archivo que se encuentra en `db/dumps/smart_home.sql` para crear la base de datos automáticamente.
+Al iniciar el servicio de la base de datos, si esta no está creada, toma los datos del archivo que se encuentra en `db/dumps/smart_home.sql` para crear la base de datos automáticamente.
 
-En ese archivo está la configuración de la tabla `Devices` y otras configuraciones más. Si quisieras cambiar algunas configuraciones deberías modificar este archivo y crear nuevamente la base de datos para que se tomen en cuenta los cambios.
+En ese archivo está la configuración de la tabla `Devices` y otras configuraciones más. Si se quisiera cambiar algunas configuraciones se debería modificar este archivo y crear nuevamente la base de datos para que se tomen en cuenta los cambios.
 
-Tené en cuenta que la base de datos se crea con permisos de superusuario por lo que no podrías borrar el directorio con tu usuario de sistema, para eso debés hacerlo con permisos de administrador. En ese caso podés ejecutar el comando `sudo rm -r db/data` para borrar el directorio completo.
+Tener en cuenta que la base de datos se crea con permisos de **superusuario** por lo que no se podrá borrar el directorio con el usuario de sistema, para eso se debe hacer con permisos de administrador. En ese caso se puede ejecutar el comando `sudo rm -r db/data` para borrar el directorio completo.
 
 </details>
 
 
 ## Detalles principales 🔍
 
-En esta sección vas a encontrar las características más relevantes del proyecto.
+En esta sección se encuentran las características más relevantes del proyecto.
 
-<details><summary><b>Mira los detalles más importantes de la aplicación</b></summary><br>
+<details><summary><b>Mirar los detalles más importantes de la aplicación</b></summary><br>
 <br>
 
 ### Arquitectura de la aplicación
 
-Como ya pudiste ver, la aplicación se ejecuta sobre el ecosistema Docker, y en esta imagen podés ver el diagrama de arquitectura.
+Como se pudo ver, la aplicación se ejecuta sobre el ecosistema Docker, y en esta imagen se puede ver el diagrama de arquitectura.
 
 ![architecture](doc/architecture.png)
 
 ### El cliente web
 
-El cliente web es una Single Page Application que se comunica con el servicio en NodeJS mediante JSON a través de requests HTTP. Puede consultar el estado de dispositivos en la base de datos (por medio del servicio en NodeJS) y también cambiar el estado de los mismos. Los estilos del código están basados en **Material Design**.
+El cliente web es una Single Page Application que se comunica con el servicio en NodeJS mediante JSON a través de requests HTTP. Se puede consultar el estado de dispositivos en la base de datos (por medio del servicio en NodeJS) y también cambiar el estado de los mismos. Los estilos del código están basados en **Material Design**.
 
 ### El servicio web
 
@@ -109,7 +159,7 @@ La base de datos se comunica con el servicio de NodeJS y permite almacenar el es
 
 ### El administrador de la DB
 
-Para esta aplicación se usa **PHPMyAdmin**, que es un administrador de base de datos web muy utilizado y que podés utilizar en caso que quieras realizar operaciones con la base, como crear tablas, modificar columnas, hacer consultas y otras cosas más.
+Para esta aplicación se usa **PHPMyAdmin**, que es un administrador de base de datos web muy utilizado y que se puede utilizar en caso que se quiera realizar operaciones con la base, como crear tablas, modificar columnas, hacer consultas y otras cosas más.
 
 ### El compilador de TypeScript
 
@@ -121,7 +171,7 @@ Los servicios de la aplicación se ejecutan sobre **contenedores de Docker**, as
 
 ### Organización del proyecto
 
-En la siguiente ilustración podés ver cómo está organizado el proyecto para que tengas en claro qué cosas hay en cada lugar.
+En la siguiente ilustración se puede ver cómo está organizado el proyecto para que tener en claro qué cosas hay en cada lugar.
 
 ```sh
 ├── db                          # directorio de la DB
@@ -146,62 +196,247 @@ En la siguiente ilustración podés ver cómo está organizado el proyecto para 
 ├── LICENSE.md                  # licencia del proyecto
 ```
 
-> No olvides ir poniendo tus cambios en el archivo `CHANGELOG.md` a medida que avanzas en el proyecto.
+> Los cambios y avances del proyecto se ven reflejados en el archivo `CHANGELOG.md`.
 
 </details>
 
 ## Detalles de implementación 💻
 
-En esta sección podés ver los detalles específicos de funcionamiento del código y que son los siguientes.
+En esta sección pse puede ver los detalles específicos de funcionamiento del código.
 
-<details><summary><b>Mira los detalles de implementación</b></summary><br>
+<details><summary><b>Mirar los detalles de implementación</b></summary><br>
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+Para crear un nuevo dispositivo se debe hacer clic en el botón `Nuevo dispositivo`. Esto abrirá un modal, en el cual debe seleccionarse el `Tipo de dispositivo`, ingresar el `Nombre` y la `Descripción` del dispositivo. Una vez realizado esto, se debe hacer clic en el botón `Guardar`. Seguido a esto, el modal se cerrará y el nuevo dispositivo podrá verse reflejado en el listado.
 
 ### Frontend
 
-Completá todos los detalles sobre cómo armaste el frontend, sus interacciones, etc.
+El frontend se desarrolló con una lista desordenada `ul`, en el cual, se incorpora por cada fila hasta 4 dispositivos como máximo. La aplicación es responsiva y adaptable a diversos dispositivos.
+Cada dispositivo incorpora botones para poder realizar las operaciones de actualización (que permite cambiar el tipo de dispositivo, el nombre y la descripción) y de eliminación del dispositivo. Además, incorpora un elemento de tipo `checkbox` o `range` según el tipo de dispositivo, a fin de enviar la acción para cambiar dicho estado.
+Por otro lado, se utiliza **Material Design** para la interacción y envío de alertas. Se implementa para el `modal` que permite realizar la creación y actualización de dispositivos, así como tambien se implementa para `toast`, que permite enviar las alertas de manera discreta y agradable a la vista.
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+El backend tiene los elementos necesarios para interactuar con el frontend y la base de datos.
+
+La siguiente tabla tiene el resumen de los endpoints implementados en esta versión.
+
+| Método | Punto Final  | Uso                                 | Recibe                  | Retorna            |
+| ------ | ------------ | ----------------------------------- | ----------------------- | ------------------ |
+| GET    | /device      | Obtiene los dispositivos existentes |                         | Dispositivos       |
+| GET    | /device/{id} | Obtiene un dispositivo determinado  | ID Dispositivo          | Dispositivo        |
+| POST   | /device      | Agrega un dispositivo               | Datos Dispositivo       | Respuesta consulta |
+| PUT    | /device      | Actualiza datos de un dispositivo   | Datos Dispositivo       | Respuesta consulta |
+| PUT    | /device      | Actualiza estado de un dispositivo  | ID Dispositivo y Estado | Respuesta consulta |
+| DELETE | /device/{id} | Elimina un dispositivo determinado  | ID Dispositivo          | Respuesta consulta |
+
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
 
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
-
-1) Devolver el estado de los dispositivos.
+1) Devolver todos los dispositivos.
 
 ```json
 {
-    "method": "get",
+    "method": "GET",
     "request_headers": "application/json",
     "request_body": "",
     "response_code": 200,
     "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
+        "devices": [      
+                        {
+                            "id": 1,
+                            "name": "Lampara 1",
+                            "description": "Luz living",
+                            "state": 1,
+                            "type": 1
+                        },
+                        {
+                            "id": 2,
+                            "name": "Lampara 2",
+                            "description": "Luz cocina",
+                            "state": 0,
+                            "type": 1
+                        },
+                        {
+                            "id": 3,
+                            "name": "Velador",
+                            "description": "Velador pieza",
+                            "state": 0.5,
+                            "type": 2
+                        },
+                        {
+                            "id": 4,
+                            "name": "Persiana 1",
+                            "description": "Persiana living",
+                            "state": 0.4,
+                            "type": 3
+                        },
+                        {
+                            "id": 5,
+                            "name": "Persiana 2",
+                            "description": "Persiana de la cocina",
+                            "state": 0.6,
+                            "type": 3
+                        },
+                        {
+                            "id": 6,
+                            "name": "Persiana 3",
+                            "description": "Persiana balcon",
+                            "state": 0.2,
+                            "type": 3
+                        },
+                        {
+                            "id": 7,
+                            "name": "Enchufe 1",
+                            "description": "Riego jardín",
+                            "state": 0,
+                            "type": 4
+                        },
+                        {
+                            "id": 8,
+                            "name": "Ventilador 1",
+                            "description": "Ventilador cocina",
+                            "state": 0.4,
+                            "type": 5
+                        },
+                        {
+                            "id": 9,
+                            "name": "Ventilador 2",
+                            "description": "Ventilador living",
+                            "state": 0,
+                            "type": 5
+                        },
+                        {
+                            "id": 10,
+                            "name": "Ventilador 3",
+                            "description": "Ventilador pieza",
+                            "state": 0.6,
+                            "type": 5
+                        },
+                        {
+                            "id": 11,
+                            "name": "AC 1",
+                            "description": "Aire acondicionado living",
+                            "state": 24,
+                            "type": 6
+                        },
+                        {
+                            "id": 12,
+                            "name": "AC 2",
+                            "description": "Aire acondicionado pieza",
+                            "state": 0,
+                            "type": 6
+                        }
+                    ]
     },
 }
 ``` 
 
-</details>
+2) Devolver un determinado dispositivo.
 
-</details>
+Ejemplo:
 
+```json
+{
+    "method": "GET",
+    "request_headers": "application/json",
+    "request_params": id = 1,
+    "request_body": "",
+    "response_code": 200,
+    "request_body": {
+        "devices": [
+                        {
+                            "id": 1,
+                            "name": "Lampara 1",
+                            "description": "Luz living",
+                            "state": 1,
+                            "type": 1
+                        }
+                    ]
+    },
+}
+``` 
+
+3) Crear un dispositivo.
+
+```json
+{
+    "method": "POST",
+    "request_headers": "application/json",
+    "request_body": "{
+                        "name": "nombre dispositivo",
+                        "description": "descripcion dispositivo",
+                        "state": "Estado dispositivo (Decimal)",
+                        "type": "ID Tipo Dispositivo (Integer)"
+                    }",
+    "response_code": 204,
+    "request_body": {
+        "ok": [object Object]
+    },
+}
+``` 
+
+4) Actualizar un dispositivo.
+
+```json
+{
+    "method": "PUT",
+    "request_headers": "application/json",
+    "request_body": "{
+                        "id": "ID Dispositivo (Integer)",
+                        "name": "nombre dispositivo",
+                        "description": "descripcion dispositivo",
+                        "type": "ID Tipo Dispositivo (Integer)"
+                    }",
+    "response_code": 204,
+    "request_body": {
+        "ok": [object Object]
+    },
+}
+``` 
+
+5) Actualizar estado de dispositivo.
+
+```json
+{
+    "method": "PUT",
+    "request_headers": "application/json",
+    "request_body": "{
+                        "id": "ID Dispositivo (Integer)",
+                        "state": "Estado dispositivo",
+                    }",
+    "response_code": 204,
+    "request_body": {
+        "ok": [object Object]
+    },
+}
+``` 
+
+6) Eliminar dispositivo.
+
+```json
+{
+    "method": "DELETE",
+    "request_headers": "application/json",
+    "request_body": "{
+                        "id": "ID Dispositivo (Integer)",
+                    }",
+    "response_code": 204,
+    "request_body": {
+        "ok": [object Object]
+    },
+}
+
+``` 
+</details>
+</details>
 
 ## Tecnologías utilizadas 🛠️
 
-En esta sección podés ver las tecnologías más importantes utilizadas.
+En esta sección se pueden ver las tecnologías más importantes utilizadas.
 
-<details><summary><b>Mira la lista completa de tecnologías</b></summary><br>
+<details><summary><b>Mirar la lista completa de tecnologías</b></summary><br>
 
 * [Docker](https://www.docker.com/) - Ecosistema que permite la ejecución de contenedores de software.
 * [Docker Compose](https://docs.docker.com/compose/) - Herramienta que permite administrar múltiples contenedores de Docker.
@@ -215,41 +450,16 @@ En esta sección podés ver las tecnologías más importantes utilizadas.
 
 ## Contribuir 🖇️
 
-Si estás interesado en el proyecto y te gustaría sumar fuerzas para que siga creciendo y mejorando, podés abrir un hilo de discusión para charlar tus propuestas en [este link](https://github.com/gotoiot/app-fullstack-base/issues/new). Así mismo podés leer el archivo [Contribuir.md](https://github.com/gotoiot/gotoiot-doc/wiki/Contribuir) de nuestra Wiki donde están bien explicados los pasos para que puedas enviarnos pull requests.
+Si desea participar del proyecto, por favor realizar un pull request con las sugerencias y el código.
 
-## Sobre Goto IoT 📖
+## Autor 👥
 
-Goto IoT es una plataforma que publica material y proyectos de código abierto bien documentados junto a una comunidad libre que colabora y promueve el conocimiento sobre IoT entre sus miembros. Acá podés ver los links más importantes:
+*  **Martin Anibal Lacheski - Año 2024**
 
-* **[Sitio web](https://www.gotoiot.com/):** Donde se publican los artículos y proyectos sobre IoT. 
-* **[Github de Goto IoT:](https://github.com/gotoiot)** Donde están alojados los proyectos para descargar y utilizar. 
-* **[Comunidad de Goto IoT:](https://groups.google.com/g/gotoiot)** Donde los miembros de la comunidad intercambian información e ideas, realizan consultas, solucionan problemas y comparten novedades.
-* **[Twitter de Goto IoT:](https://twitter.com/gotoiot)** Donde se publican las novedades del sitio y temas relacionados con IoT.
-* **[Wiki de Goto IoT:](https://github.com/gotoiot/doc/wiki)** Donde hay información de desarrollo complementaria para ampliar el contexto.
-
-## Muestas de agradecimiento 🎁
-
-Si te gustó este proyecto y quisieras apoyarlo, cualquiera de estas acciones estaría más que bien para nosotros:
-
-* Apoyar este proyecto con una ⭐ en Github para llegar a más personas.
-* Sumarte a [nuestra comunidad](https://groups.google.com/g/gotoiot) abierta y dejar un feedback sobre qué te pareció el proyecto.
-* [Seguirnos en twitter](https://github.com/gotoiot/doc/wiki) y dejar algún comentario o like.
-* Compartir este proyecto con otras personas.
-
-## Autores 👥
-
-Las colaboraciones principales fueron realizadas por:
-
-* **[Agustin Bassi](https://github.com/agustinBassi)**: Ideación, puesta en marcha y mantenimiento del proyecto.
-* **[Ernesto Giggliotti](https://github.com/ernesto-g)**: Creación inicial del frontend, elección de Material Design.
-* **[Brian Ducca](https://github.com/brianducca)**: Ayuda para conectar el backend a la base de datos, puesta a punto de imagen de Docker.
-
-También podés mirar todas las personas que han participado en la [lista completa de contribuyentes](https://github.com/###/contributors).
 
 ## Licencia 📄
 
-Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)). Podés ver el archivo [LICENSE.md](LICENSE.md) para más detalles sobre el uso de este material.
+Este proyecto está bajo Licencia ([MIT](https://choosealicense.com/licenses/mit/)).
 
 ---
 
-**Copyright © Goto IoT 2021** ⌨️ [**Website**](https://www.gotoiot.com) ⌨️ [**Group**](https://groups.google.com/g/gotoiot) ⌨️ [**Github**](https://www.github.com/gotoiot) ⌨️ [**Twitter**](https://www.twitter.com/gotoiot) ⌨️ [**Wiki**](https://github.com/gotoiot/doc/wiki)
