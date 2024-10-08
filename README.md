@@ -8,10 +8,11 @@ Web App Smart Home
 Este proyecto es una aplicación web fullstack que se ejecuta sobre el ecosistema `Docker`. Está compuesta por un compilador de `TypeScript` que permite utilizar un `cliente web`. También tiene un servicio en `NodeJS` que permite ejecutar código en backend y al mismo tiempo disponibilizar el código del cliente web para interactar con el servicio. Además tiene una `base de datos` MySQL que permite interactuar con el backend para guardar y consultar datos, y de manera adicional trae un `administrador` de base de datos para poder administrar la base en caso que lo necesites.
 
 
-Contenido del proyecto
+Contenido
 ------------------
+
 - [Web App Smart Home](#web-app-smart-home)
-  - [Contenido del proyecto](#contenido-del-proyecto)
+  - [Contenido](#contenido)
   - [Introducción](#introducción)
   - [Inicialización 🚀](#inicialización-)
     - [Instalar las dependencias](#instalar-las-dependencias)
